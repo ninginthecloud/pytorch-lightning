@@ -32,10 +32,8 @@ class SSIM(_SSIM):
         dist_sync_on_step: bool = False,
         process_group: Optional[Any] = None,
     ):
-        """
-        This implementation refers to :class:`~torchmetrics.SSIM`.
+        """This implementation refers to :class:`~torchmetrics.SSIM`.
 
-        .. deprecated::
-            Use :class:`~torchmetrics.SSIM`. Will be removed in v1.5.0.
+        .. deprecated::     Use :class:`~torchmetrics.SSIM`. Will be removed in v1.5.0.
         """
         void(kernel_size, sigma, reduction, data_range, k1, k2, compute_on_step, dist_sync_on_step, process_group)

@@ -30,10 +30,8 @@ class PSNR(_PSNR):
         dist_sync_on_step: bool = False,
         process_group: Optional[Any] = None,
     ):
-        """
-        This implementation refers to :class:`~torchmetrics.PSNR`.
+        """This implementation refers to :class:`~torchmetrics.PSNR`.
 
-        .. deprecated::
-            Use :class:`~torchmetrics.PSNR`. Will be removed in v1.5.0.
+        .. deprecated::     Use :class:`~torchmetrics.PSNR`. Will be removed in v1.5.0.
         """
         void(data_range, base, reduction, dim, compute_on_step, dist_sync_on_step, process_group)

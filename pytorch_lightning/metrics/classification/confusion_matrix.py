@@ -29,10 +29,8 @@ class ConfusionMatrix(_ConfusionMatrix):
         dist_sync_on_step: bool = False,
         process_group: Optional[Any] = None,
     ):
-        """
-        This implementation refers to :class:`~torchmetrics.ConfusionMatrix`.
+        """This implementation refers to :class:`~torchmetrics.ConfusionMatrix`.
 
-        .. deprecated::
-            Use :class:`~torchmetrics.ConfusionMatrix`. Will be removed in v1.5.0.
+        .. deprecated::     Use :class:`~torchmetrics.ConfusionMatrix`. Will be removed in v1.5.0.
         """
         void(num_classes, normalize, threshold, compute_on_step, dist_sync_on_step, process_group)

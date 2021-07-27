@@ -36,11 +36,9 @@ class Precision(_Precision):
         process_group: Optional[Any] = None,
         dist_sync_fn: Callable = None,
     ):
-        """
-        This implementation refers to :class:`~torchmetrics.Precision`.
+        """This implementation refers to :class:`~torchmetrics.Precision`.
 
-        .. deprecated::
-            Use :class:`~torchmetrics.Precision`. Will be removed in v1.5.0.
+        .. deprecated::     Use :class:`~torchmetrics.Precision`. Will be removed in v1.5.0.
         """
         _ = (
             num_classes,
@@ -75,11 +73,9 @@ class Recall(_Recall):
         process_group: Optional[Any] = None,
         dist_sync_fn: Callable = None,
     ):
-        """
-        This implementation refers to :class:`~torchmetrics.Recall`.
+        """This implementation refers to :class:`~torchmetrics.Recall`.
 
-        .. deprecated::
-            Use :class:`~torchmetrics.Recall`. Will be removed in v1.5.0.
+        .. deprecated::     Use :class:`~torchmetrics.Recall`. Will be removed in v1.5.0.
         """
         void(
             num_classes,

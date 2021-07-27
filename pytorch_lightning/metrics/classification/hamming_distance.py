@@ -28,10 +28,8 @@ class HammingDistance(_HammingDistance):
         process_group: Optional[Any] = None,
         dist_sync_fn: Callable = None,
     ):
-        """
-        This implementation refers to :class:`~torchmetrics.HammingDistance`.
+        """This implementation refers to :class:`~torchmetrics.HammingDistance`.
 
-        .. deprecated::
-            Use :class:`~torchmetrics.HammingDistance`. Will be removed in v1.5.0.
+        .. deprecated::     Use :class:`~torchmetrics.HammingDistance`. Will be removed in v1.5.0.
         """
         void(threshold, compute_on_step, dist_sync_on_step, process_group, dist_sync_fn)

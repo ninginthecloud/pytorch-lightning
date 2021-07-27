@@ -24,7 +24,7 @@ THRESHOLD = 0.5
 
 
 def setup_ddp(rank, world_size):
-    """Setup ddp enviroment"""
+    """Setup ddp enviroment."""
     os.environ["MASTER_ADDR"] = "localhost"
     os.environ["MASTER_PORT"] = "8088"
 
@@ -33,9 +33,7 @@ def setup_ddp(rank, world_size):
 
 
 def _assert_allclose(pl_result, sk_result, atol: float = 1e-8):
-    """Utility function for recursively asserting that two results are within
-    a certain tolerance
-    """
+    """Utility function for recursively asserting that two results are within a certain tolerance."""
     # single output compare
     if isinstance(pl_result, torch.Tensor):
         assert np.allclose(pl_result.numpy(), sk_result, atol=atol, equal_nan=True)
@@ -48,9 +46,7 @@ def _assert_allclose(pl_result, sk_result, atol: float = 1e-8):
 
 
 def _assert_tensor(pl_result):
-    """Utility function for recursively checking that some input only consist of
-    torch tensors
-    """
+    """Utility function for recursively checking that some input only consist of torch tensors."""
     if isinstance(pl_result, (list, tuple)):
         for plr in pl_result:
             _assert_tensor(plr)
@@ -71,8 +67,7 @@ def _class_test(
     check_batch: bool = True,
     atol: float = 1e-8,
 ):
-    """Utility function doing the actual comparison between lightning class metric
-    and reference metric.
+    """Utility function doing the actual comparison between lightning class metric and reference metric.
 
     Args:
         rank: rank of current process
@@ -135,8 +130,7 @@ def _functional_test(
     metric_args: dict = None,
     atol: float = 1e-8,
 ):
-    """Utility function doing the actual comparison between lightning functional metric
-    and reference metric.
+    """Utility function doing the actual comparison between lightning functional metric and reference metric.
 
     Args:
         preds: torch tensor with predictions
@@ -158,20 +152,19 @@ def _functional_test(
 
 
 class MetricTester:
-    """Class used for efficiently run alot of parametrized tests in ddp mode.
-    Makes sure that ddp is only setup once and that pool of processes are
-    used for all tests.
+    """Class used for efficiently run alot of parametrized tests in ddp mode. Makes sure that ddp is only setup
+    once and that pool of processes are used for all tests.
 
-    All tests should subclass from this and implement a new method called
-        `test_metric_name`
-    where the method `self.run_metric_test` is called inside.
+    All tests should subclass from this and implement a new method called     `test_metric_name` where the method
+    `self.run_metric_test` is called inside.
     """
 
     atol = 1e-8
 
     def setup_class(self):
-        """Setup the metric class. This will spawn the pool of workers that are
-        used for metric testing and setup_ddp
+        """Setup the metric class.
+
+        This will spawn the pool of workers that are used for metric testing and setup_ddp
         """
 
         self.poolSize = NUM_PROCESSES
@@ -179,7 +172,7 @@ class MetricTester:
         self.pool.starmap(setup_ddp, [(rank, self.poolSize) for rank in range(self.poolSize)])
 
     def teardown_class(self):
-        """Close pool of workers"""
+        """Close pool of workers."""
         self.pool.close()
         self.pool.join()
 
@@ -191,8 +184,7 @@ class MetricTester:
         sk_metric: Callable,
         metric_args: dict = None,
     ):
-        """Main method that should be used for testing functions. Call this inside
-        testing method
+        """Main method that should be used for testing functions. Call this inside testing method.
 
         Args:
             preds: torch tensor with predictions
@@ -224,8 +216,7 @@ class MetricTester:
         check_dist_sync_on_step: bool = True,
         check_batch: bool = True,
     ):
-        """Main method that should be used for testing class. Call this inside testing
-        methods.
+        """Main method that should be used for testing class. Call this inside testing methods.
 
         Args:
             ddp: bool, if running in ddp mode or not

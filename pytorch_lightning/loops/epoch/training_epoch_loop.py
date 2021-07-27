@@ -28,8 +28,7 @@ from pytorch_lightning.utilities.warnings import WarningCache
 
 
 class TrainingEpochLoop(loops.Loop):
-    """
-    Runs over all batches in a dataloader (one epoch).
+    """Runs over all batches in a dataloader (one epoch).
 
     Args:
         min_steps: The minimum number of steps (batches) to process
@@ -68,8 +67,9 @@ class TrainingEpochLoop(loops.Loop):
     @property
     def done(self) -> bool:
         """Returns whether the training should be stopped.
-        The criteria are that the number of steps reached the max steps,
-        the last batch is reached or the trainer signals to stop (e.g. by early stopping).
+
+        The criteria are that the number of steps reached the max steps, the last batch is reached or the trainer
+        signals to stop (e.g. by early stopping).
         """
         max_steps_reached = self.max_steps is not None and self.global_step >= self.max_steps
         return max_steps_reached or self.trainer.should_stop or self._num_training_batches_reached(self.is_last_batch)
@@ -84,7 +84,7 @@ class TrainingEpochLoop(loops.Loop):
             self.val_loop = val_loop
 
     def reset(self) -> None:
-        """Resets the internal state of the loop for a new run"""
+        """Resets the internal state of the loop for a new run."""
         self.iteration_count = 0
         self.batches_seen = 0
         self.is_last_batch = False
@@ -306,7 +306,7 @@ class TrainingEpochLoop(loops.Loop):
     def _track_epoch_end_reduce_metrics(
         self, epoch_output: List[List[STEP_OUTPUT]], batch_end_outputs: STEP_OUTPUT
     ) -> None:
-        """Adds the batch outputs to the epoch outputs and prepares reduction"""
+        """Adds the batch outputs to the epoch outputs and prepares reduction."""
         hook_overridden = self._should_add_batch_output_to_epoch_output()
         if not hook_overridden:
             return
@@ -345,8 +345,7 @@ class TrainingEpochLoop(loops.Loop):
     def _prepare_outputs(
         outputs: List[List[List["ResultCollection"]]], batch_mode: bool
     ) -> Union[List[List[List[Dict]]], List[List[Dict]], List[Dict], Dict]:
-        """
-        Extract required information from batch or epoch end results.
+        """Extract required information from batch or epoch end results.
 
         Args:
             outputs: A 3-dimensional list of ``ResultCollection`` objects with dimensions:
@@ -397,7 +396,7 @@ class TrainingEpochLoop(loops.Loop):
         return processed_outputs
 
     def update_lr_schedulers(self, interval: str, update_plateau_schedulers: bool) -> None:
-        """updates the lr schedulers based on the given interval"""
+        """updates the lr schedulers based on the given interval."""
         if interval == "step" and self.batch_loop.should_accumulate():
             return
         self.trainer.optimizer_connector.update_learning_rates(
@@ -407,7 +406,7 @@ class TrainingEpochLoop(loops.Loop):
         )
 
     def _increment_accumulated_grad_global_step(self) -> None:
-        """increments global step"""
+        """increments global step."""
         num_accumulated_batches_reached = self.batch_loop._accumulated_batches_reached()
         num_training_batches_reached = self._num_training_batches_reached()
 
@@ -443,7 +442,7 @@ class TrainingEpochLoop(loops.Loop):
         return is_val_check_batch
 
     def _save_loggers_on_train_batch_end(self) -> None:
-        """Flushes loggers to disk"""
+        """Flushes loggers to disk."""
         # when loggers should save to disk
         should_flush_logs = self.trainer.logger_connector.should_flush_logs
         if should_flush_logs and self.trainer.is_global_zero and self.trainer.logger is not None:

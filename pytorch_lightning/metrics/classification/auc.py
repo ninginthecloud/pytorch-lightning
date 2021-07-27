@@ -28,10 +28,8 @@ class AUC(_AUC):
         process_group: Optional[Any] = None,
         dist_sync_fn: Callable = None,
     ):
-        """
-        This implementation refers to :class:`~torchmetrics.AUC`.
+        """This implementation refers to :class:`~torchmetrics.AUC`.
 
-        .. deprecated::
-            Use :class:`~torchmetrics.AUC`. Will be removed in v1.5.0.
+        .. deprecated::     Use :class:`~torchmetrics.AUC`. Will be removed in v1.5.0.
         """
         void(reorder, compute_on_step, dist_sync_on_step, process_group, dist_sync_fn)

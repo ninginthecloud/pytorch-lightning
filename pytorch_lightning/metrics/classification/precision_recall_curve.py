@@ -28,10 +28,8 @@ class PrecisionRecallCurve(_PrecisionRecallCurve):
         dist_sync_on_step: bool = False,
         process_group: Optional[Any] = None,
     ):
-        """
-        This implementation refers to :class:`~torchmetrics.PrecisionRecallCurve`.
+        """This implementation refers to :class:`~torchmetrics.PrecisionRecallCurve`.
 
-        .. deprecated::
-            Use :class:`~torchmetrics.PrecisionRecallCurve`. Will be removed in v1.5.0.
+        .. deprecated::     Use :class:`~torchmetrics.PrecisionRecallCurve`. Will be removed in v1.5.0.
         """
         void(num_classes, pos_label, compute_on_step, dist_sync_on_step, process_group)

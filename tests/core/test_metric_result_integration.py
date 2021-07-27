@@ -92,7 +92,7 @@ def _ddp_test_fn(rank, worldsize):
 
 @RunIf(skip_windows=True, min_gpus=2)
 def test_result_reduce_ddp():
-    """Make sure result logging works with DDP"""
+    """Make sure result logging works with DDP."""
     tutils.set_random_master_port()
 
     worldsize = 2
@@ -188,9 +188,7 @@ def my_sync_dist(x, *_, **__):
 
 
 def test_result_collection_restoration(tmpdir):
-    """
-    This test make sure metrics are properly reloaded on failure.
-    """
+    """This test make sure metrics are properly reloaded on failure."""
 
     result = ResultCollection(True, torch.device("cpu"))
     metric_a = DummyMetric()

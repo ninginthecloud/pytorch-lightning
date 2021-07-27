@@ -27,10 +27,8 @@ class MeanAbsoluteError(_MeanAbsoluteError):
         process_group: Optional[Any] = None,
         dist_sync_fn: Callable = None,
     ):
-        """
-        This implementation refers to :class:`~torchmetrics.MeanAbsoluteError`.
+        """This implementation refers to :class:`~torchmetrics.MeanAbsoluteError`.
 
-        .. deprecated::
-            Use :class:`~torchmetrics.MeanAbsoluteError`. Will be removed in v1.5.0.
+        .. deprecated::     Use :class:`~torchmetrics.MeanAbsoluteError`. Will be removed in v1.5.0.
         """
         void(compute_on_step, dist_sync_on_step, process_group, dist_sync_fn)

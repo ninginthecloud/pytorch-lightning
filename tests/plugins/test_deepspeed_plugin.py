@@ -58,9 +58,7 @@ class ModelParallelBoringModelManualOptim(BoringModel):
 
 
 def test_deepspeed_lightning_module(tmpdir):
-    """
-    Test to ensure that a model wrapped in `LightningDeepSpeedModule` moves types and device correctly.
-    """
+    """Test to ensure that a model wrapped in `LightningDeepSpeedModule` moves types and device correctly."""
 
     model = BoringModel()
     module = LightningDeepSpeedModule(model, precision=16)
@@ -76,9 +74,8 @@ def test_deepspeed_lightning_module(tmpdir):
 
 @RunIf(min_gpus=1)
 def test_deepspeed_lightning_module_precision(tmpdir):
-    """
-    Test to ensure that a model wrapped in `LightningDeepSpeedModule` moves tensors to half when precision 16.
-    """
+    """Test to ensure that a model wrapped in `LightningDeepSpeedModule` moves tensors to half when precision
+    16."""
 
     model = BoringModel()
     module = LightningDeepSpeedModule(model, precision=16)
@@ -116,9 +113,8 @@ def deepspeed_zero_config(deepspeed_config):
 @RunIf(deepspeed=True)
 @pytest.mark.parametrize("input", ("deepspeed", DeepSpeedPlugin))
 def test_deepspeed_plugin_string(tmpdir, input):
-    """
-    Test to ensure that the plugin can be passed via string or instance, and parallel devices is correctly set.
-    """
+    """Test to ensure that the plugin can be passed via string or instance, and parallel devices is correctly
+    set."""
 
     trainer = Trainer(fast_dev_run=True, default_root_dir=tmpdir, plugins=input if isinstance(input, str) else input())
 
@@ -128,9 +124,7 @@ def test_deepspeed_plugin_string(tmpdir, input):
 
 @RunIf(deepspeed=True)
 def test_deepspeed_plugin_env(tmpdir, monkeypatch, deepspeed_config):
-    """
-    Test to ensure that the plugin can be passed via a string with an environment variable.
-    """
+    """Test to ensure that the plugin can be passed via a string with an environment variable."""
     config_path = os.path.join(tmpdir, "temp.json")
     with open(config_path, "w") as f:
         f.write(json.dumps(deepspeed_config))
@@ -151,8 +145,8 @@ def test_deepspeed_plugin_env(tmpdir, monkeypatch, deepspeed_config):
     [pytest.param("native", marks=RunIf(amp_native=True)), pytest.param("apex", marks=RunIf(amp_apex=True))],
 )
 def test_deepspeed_precision_choice(amp_backend, precision, tmpdir):
-    """
-    Test to ensure precision plugin is also correctly chosen.
+    """Test to ensure precision plugin is also correctly chosen.
+
     DeepSpeed handles precision via Custom DeepSpeedPrecisionPlugin
     """
 
@@ -167,9 +161,7 @@ def test_deepspeed_precision_choice(amp_backend, precision, tmpdir):
 
 @RunIf(deepspeed=True)
 def test_deepspeed_with_invalid_config_path(tmpdir):
-    """
-    Test to ensure if we pass an invalid config path we throw an exception.
-    """
+    """Test to ensure if we pass an invalid config path we throw an exception."""
 
     with pytest.raises(
         MisconfigurationException, match="You passed in a path to a DeepSpeed config but the path does not exist"
@@ -179,9 +171,7 @@ def test_deepspeed_with_invalid_config_path(tmpdir):
 
 @RunIf(deepspeed=True)
 def test_deepspeed_with_env_path(tmpdir, monkeypatch, deepspeed_config):
-    """
-    Test to ensure if we pass an env variable, we load the config from the path.
-    """
+    """Test to ensure if we pass an env variable, we load the config from the path."""
     config_path = os.path.join(tmpdir, "temp.json")
     with open(config_path, "w") as f:
         f.write(json.dumps(deepspeed_config))
@@ -192,9 +182,7 @@ def test_deepspeed_with_env_path(tmpdir, monkeypatch, deepspeed_config):
 
 @RunIf(deepspeed=True)
 def test_deepspeed_defaults(tmpdir):
-    """
-    Ensure that defaults are correctly set as a config for DeepSpeed if no arguments are passed.
-    """
+    """Ensure that defaults are correctly set as a config for DeepSpeed if no arguments are passed."""
     plugin = DeepSpeedPlugin()
     assert plugin.config is not None
     assert isinstance(plugin.config["zero_optimization"], dict)
@@ -254,10 +242,8 @@ def test_deepspeed_auto_batch_size_config_select(tmpdir, dataset_cls, value):
 
 @RunIf(min_gpus=1, deepspeed=True, special=True)
 def test_deepspeed_run_configure_optimizers(tmpdir):
-    """
-    Test end to end that deepspeed works with defaults (without ZeRO as that requires compilation),
-    whilst using configure_optimizers for optimizers and schedulers.
-    """
+    """Test end to end that deepspeed works with defaults (without ZeRO as that requires compilation), whilst using
+    configure_optimizers for optimizers and schedulers."""
 
     class TestCB(Callback):
         def on_train_start(self, trainer, pl_module) -> None:
@@ -295,10 +281,8 @@ def test_deepspeed_run_configure_optimizers(tmpdir):
 
 @RunIf(min_gpus=1, deepspeed=True, special=True)
 def test_deepspeed_config(tmpdir, deepspeed_zero_config):
-    """
-    Test to ensure deepspeed works correctly when passed a DeepSpeed config object including optimizers/schedulers
-    and saves the model weights to load correctly.
-    """
+    """Test to ensure deepspeed works correctly when passed a DeepSpeed config object including
+    optimizers/schedulers and saves the model weights to load correctly."""
 
     class TestCB(Callback):
         def on_train_start(self, trainer, pl_module) -> None:
@@ -329,7 +313,8 @@ def test_deepspeed_config(tmpdir, deepspeed_zero_config):
 
 @RunIf(min_gpus=1, deepspeed=True, special=True)
 def test_deepspeed_custom_precision_params(tmpdir):
-    """Ensure if we modify the FP16 parameters via the DeepSpeedPlugin, the deepspeed config contains these changes."""
+    """Ensure if we modify the FP16 parameters via the DeepSpeedPlugin, the deepspeed config contains these
+    changes."""
 
     class TestCB(Callback):
         def on_train_start(self, trainer, pl_module) -> None:
@@ -390,9 +375,8 @@ def test_deepspeed_assert_config_zero_offload_disabled(tmpdir, deepspeed_zero_co
 
 @RunIf(min_gpus=2, deepspeed=True, special=True)
 def test_deepspeed_multigpu(tmpdir, deepspeed_config):
-    """
-    Test to ensure that DeepSpeed with multiple GPUs works, without ZeRO Optimization as this requires compilation.
-    """
+    """Test to ensure that DeepSpeed with multiple GPUs works, without ZeRO Optimization as this requires
+    compilation."""
     model = BoringModel()
     trainer = Trainer(
         default_root_dir=tmpdir,
@@ -489,9 +473,7 @@ class ManualModelParallelClassificationModel(ModelParallelClassificationModel):
 
 @RunIf(min_gpus=2, deepspeed=True, special=True)
 def test_deepspeed_multigpu_stage_3(tmpdir, deepspeed_config):
-    """
-    Test to ensure ZeRO Stage 3 works with a parallel model.
-    """
+    """Test to ensure ZeRO Stage 3 works with a parallel model."""
     model = ModelParallelBoringModel()
     trainer = Trainer(
         default_root_dir=tmpdir, plugins=[DeepSpeedPlugin(stage=3)], gpus=2, fast_dev_run=True, precision=16
@@ -504,9 +486,7 @@ def test_deepspeed_multigpu_stage_3(tmpdir, deepspeed_config):
 
 @RunIf(min_gpus=2, deepspeed=True, special=True)
 def test_deepspeed_multigpu_stage_3_manual_optimization(tmpdir, deepspeed_config):
-    """
-    Test to ensure ZeRO Stage 3 works with a parallel model.
-    """
+    """Test to ensure ZeRO Stage 3 works with a parallel model."""
     model = ModelParallelBoringModelManualOptim()
     model.training_epoch_end = None
     trainer = Trainer(
@@ -567,28 +547,22 @@ def run_checkpoint_test(
 
 @RunIf(min_gpus=2, deepspeed=True, special=True)
 def test_deepspeed_multigpu_stage_3_checkpointing(tmpdir):
-    """
-    Test to ensure with Stage 3 and multiple GPUs that we can save/load a model resuming from a checkpoint,
-    and see convergence.
-    """
+    """Test to ensure with Stage 3 and multiple GPUs that we can save/load a model resuming from a checkpoint, and
+    see convergence."""
     run_checkpoint_test(tmpdir, save_full_weights=False)
 
 
 @RunIf(min_gpus=2, deepspeed=True, special=True)
 def test_deepspeed_multigpu_stage_3_checkpointing_full_weights(tmpdir):
-    """
-    Test to ensure with Stage 3 and multiple GPUs that we can save/load a model resuming from a checkpoint,
-    where we save the full weights to one file.
-    """
+    """Test to ensure with Stage 3 and multiple GPUs that we can save/load a model resuming from a checkpoint,
+    where we save the full weights to one file."""
     run_checkpoint_test(tmpdir, save_full_weights=True)
 
 
 @RunIf(min_gpus=2, deepspeed=True, special=True)
 def test_deepspeed_multigpu_stage_3_checkpointing_full_weights_manual(tmpdir):
-    """
-    Test to ensure with Stage 3 and multiple GPUs that we can save/load a model resuming from a checkpoint,
-    where we save the full weights to one file.
-    """
+    """Test to ensure with Stage 3 and multiple GPUs that we can save/load a model resuming from a checkpoint,
+    where we save the full weights to one file."""
     run_checkpoint_test(tmpdir, save_full_weights=True, automatic_optimization=False, accumulate_grad_batches=1)
 
 
@@ -603,9 +577,7 @@ def test_deepspeed_multigpu_stage_2_accumulated_grad_batches_offload_optimizer(t
 
 
 def _deepspeed_multigpu_stage_2_accumulated_grad_batches(tmpdir, offload_optimizer):
-    """
-    Test to ensure with Stage 2 and multiple GPUs, accumulated grad batches works.
-    """
+    """Test to ensure with Stage 2 and multiple GPUs, accumulated grad batches works."""
     seed_everything(42)
 
     class VerificationCallback(Callback):
@@ -639,9 +611,7 @@ def _deepspeed_multigpu_stage_2_accumulated_grad_batches(tmpdir, offload_optimiz
 
 @RunIf(min_gpus=2, deepspeed=True, special=True)
 def test_deepspeed_multigpu_test(tmpdir, deepspeed_config):
-    """
-    Test to ensure we can use DeepSpeed with just test using ZeRO Stage 3.
-    """
+    """Test to ensure we can use DeepSpeed with just test using ZeRO Stage 3."""
     model = ModelParallelBoringModel()
     trainer = Trainer(
         default_root_dir=tmpdir, plugins=[DeepSpeedPlugin(stage=3)], gpus=2, fast_dev_run=True, precision=16
@@ -653,8 +623,8 @@ def test_deepspeed_multigpu_test(tmpdir, deepspeed_config):
 @mock.patch("deepspeed.init_distributed", autospec=True)
 @pytest.mark.parametrize("platform", ["Linux", "Windows"])
 def test_deepspeed_plugin_env_variables(mock_deepspeed_distributed, tmpdir, platform):
-    """
-    Test to ensure that we setup distributed communication using correctly.
+    """Test to ensure that we setup distributed communication using correctly.
+
     When using windows, ranks environment variables should not be set, and deepspeed should handle this.
     """
     trainer = Trainer(default_root_dir=tmpdir, plugins=[DeepSpeedPlugin(stage=3)])

@@ -104,7 +104,7 @@ def test_on_train_batch_start_return_minus_one(max_epochs, batch_idx_):
 
 
 def test_should_stop_mid_epoch(tmpdir):
-    """Test that training correctly stops mid epoch and that validation is still called at the right time"""
+    """Test that training correctly stops mid epoch and that validation is still called at the right time."""
 
     class TestModel(BoringModel):
         def __init__(self):

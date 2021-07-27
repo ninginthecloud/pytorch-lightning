@@ -27,10 +27,8 @@ class MeanSquaredError(_MeanSquaredError):
         process_group: Optional[Any] = None,
         dist_sync_fn: Callable = None,
     ):
-        """
-        This implementation refers to :class:`~torchmetrics.MeanSquaredError`.
+        """This implementation refers to :class:`~torchmetrics.MeanSquaredError`.
 
-        .. deprecated::
-            Use :class:`~torchmetrics.MeanSquaredError`. Will be removed in v1.5.0.
+        .. deprecated::     Use :class:`~torchmetrics.MeanSquaredError`. Will be removed in v1.5.0.
         """
         void(compute_on_step, dist_sync_on_step, process_group, dist_sync_fn)

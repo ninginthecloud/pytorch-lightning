@@ -25,10 +25,8 @@ def test_unsupported_precision_plugins():
 
 @pytest.mark.parametrize("delay_dispatch", [True, False])
 def test_plugin_setup_optimizers_in_pre_dispatch(tmpdir, delay_dispatch):
-    """
-    Test when using a custom training type plugin that delays setup optimizers,
-    we do not call setup optimizers till ``pre_dispatch``.
-    """
+    """Test when using a custom training type plugin that delays setup optimizers, we do not call setup optimizers
+    till ``pre_dispatch``."""
 
     class TestModel(BoringModel):
         def on_fit_start(self):
@@ -52,9 +50,7 @@ def test_plugin_setup_optimizers_in_pre_dispatch(tmpdir, delay_dispatch):
 
 
 def test_accelerator_on_reset_dataloader_hooks(tmpdir):
-    """
-    Ensure data-loader hooks are called using an Accelerator.
-    """
+    """Ensure data-loader hooks are called using an Accelerator."""
 
     class CustomAccelerator(CPUAccelerator):
         train_count: int = 0
@@ -107,9 +103,7 @@ def test_accelerator_on_reset_dataloader_hooks(tmpdir):
 
 
 def test_plugin_on_reset_dataloader_hooks(tmpdir):
-    """
-    Ensure data-loader hooks are called using a Plugin.
-    """
+    """Ensure data-loader hooks are called using a Plugin."""
 
     class CustomPlugin(SingleDevicePlugin):
         train_count: int = 0

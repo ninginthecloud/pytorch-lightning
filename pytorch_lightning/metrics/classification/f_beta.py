@@ -32,11 +32,9 @@ class FBeta(_FBeta):
         dist_sync_on_step: bool = False,
         process_group: Optional[Any] = None,
     ):
-        """
-        This implementation refers to :class:`~torchmetrics.FBeta`.
+        """This implementation refers to :class:`~torchmetrics.FBeta`.
 
-        .. deprecated::
-            Use :class:`~torchmetrics.FBeta`. Will be removed in v1.5.0.
+        .. deprecated::     Use :class:`~torchmetrics.FBeta`. Will be removed in v1.5.0.
         """
         _ = num_classes, beta, threshold, average, multilabel, compute_on_step, dist_sync_on_step, process_group
 
@@ -53,10 +51,8 @@ class F1(_F1):
         dist_sync_on_step: bool = False,
         process_group: Optional[Any] = None,
     ):
-        """
-        This implementation refers to :class:`~torchmetrics.F1`.
+        """This implementation refers to :class:`~torchmetrics.F1`.
 
-        .. deprecated::
-            Use :class:`~torchmetrics.F1`. Will be removed in v1.5.0.
+        .. deprecated::     Use :class:`~torchmetrics.F1`. Will be removed in v1.5.0.
         """
         void(num_classes, threshold, average, multilabel, compute_on_step, dist_sync_on_step, process_group)

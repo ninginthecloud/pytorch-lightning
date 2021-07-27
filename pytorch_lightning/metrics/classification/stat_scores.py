@@ -34,11 +34,9 @@ class StatScores(_StatScores):
         process_group: Optional[Any] = None,
         dist_sync_fn: Callable = None,
     ):
-        """
-        This implementation refers to :class:`~torchmetrics.StatScores`.
+        """This implementation refers to :class:`~torchmetrics.StatScores`.
 
-        .. deprecated::
-            Use :class:`~torchmetrics.StatScores`. Will be removed in v1.5.0.
+        .. deprecated::     Use :class:`~torchmetrics.StatScores`. Will be removed in v1.5.0.
         """
         void(
             threshold,

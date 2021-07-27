@@ -28,10 +28,8 @@ class ExplainedVariance(_ExplainedVariance):
         process_group: Optional[Any] = None,
         dist_sync_fn: Callable = None,
     ):
-        """
-        This implementation refers to :class:`~torchmetrics.ExplainedVariance`.
+        """This implementation refers to :class:`~torchmetrics.ExplainedVariance`.
 
-        .. deprecated::
-            Use :class:`~torchmetrics.ExplainedVariance`. Will be removed in v1.5.0.
+        .. deprecated::     Use :class:`~torchmetrics.ExplainedVariance`. Will be removed in v1.5.0.
         """
         void(multioutput, compute_on_step, dist_sync_on_step, process_group, dist_sync_fn)

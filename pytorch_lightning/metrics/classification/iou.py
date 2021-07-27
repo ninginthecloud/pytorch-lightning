@@ -31,11 +31,9 @@ class IoU(_IoU):
         dist_sync_on_step: bool = False,
         process_group: Optional[Any] = None,
     ):
-        """
-        This implementation refers to :class:`~torchmetrics.IoU`.
+        """This implementation refers to :class:`~torchmetrics.IoU`.
 
-        .. deprecated::
-            Use :class:`~torchmetrics.IoU`. Will be removed in v1.5.0.
+        .. deprecated::     Use :class:`~torchmetrics.IoU`. Will be removed in v1.5.0.
         """
         void(
             num_classes,

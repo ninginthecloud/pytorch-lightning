@@ -31,10 +31,8 @@ class AUROC(_AUROC):
         process_group: Optional[Any] = None,
         dist_sync_fn: Callable = None,
     ):
-        """
-        This implementation refers to :class:`~torchmetrics.AUROC`.
+        """This implementation refers to :class:`~torchmetrics.AUROC`.
 
-        .. deprecated::
-            Use :class:`~torchmetrics.AUROC`. Will be removed in v1.5.0.
+        .. deprecated::     Use :class:`~torchmetrics.AUROC`. Will be removed in v1.5.0.
         """
         void(num_classes, pos_label, average, max_fpr, compute_on_step, dist_sync_on_step, process_group, dist_sync_fn)

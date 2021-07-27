@@ -143,9 +143,8 @@ def _normalize_parse_gpu_string_input(s: Union[int, str, List[int]]) -> Union[in
 
 
 def _sanitize_gpu_ids(gpus: List[int]) -> List[int]:
-    """
-    Checks that each of the GPUs in the list is actually available.
-    Raises a MisconfigurationException if any of the GPUs is not available.
+    """Checks that each of the GPUs in the list is actually available. Raises a MisconfigurationException if any of
+    the GPUs is not available.
 
     Args:
         gpus: list of ints corresponding to GPU indices
@@ -189,9 +188,8 @@ def _get_all_available_gpus() -> List[int]:
 
 
 def _check_data_type(device_ids: Any) -> None:
-    """
-    Checks that the device_ids argument is one of: None, Int, String or List.
-    Raises a MisconfigurationException otherwise.
+    """Checks that the device_ids argument is one of: None, Int, String or List. Raises a MisconfigurationException
+    otherwise.
 
     Args:
         device_ids: gpus/tpu_cores parameter as passed to the Trainer
