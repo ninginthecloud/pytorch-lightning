@@ -13,20 +13,25 @@
 # limitations under the License.
 from typing import Dict, Optional
 
-import torch
-
 import pytorch_lightning as pl
+import torch
 from pytorch_lightning.core.optimizer import LightningOptimizer
 from pytorch_lightning.plugins.training_type.ddp import DDPPlugin
 from pytorch_lightning.trainer.states import TrainerFn
-from pytorch_lightning.utilities import _FAIRSCALE_AVAILABLE, _FAIRSCALE_OSS_FP16_BROADCAST_AVAILABLE, rank_zero_only
+from pytorch_lightning.utilities import (
+    _FAIRSCALE_AVAILABLE,
+    _FAIRSCALE_OSS_FP16_BROADCAST_AVAILABLE,
+    rank_zero_only,
+)
 from pytorch_lightning.utilities.exceptions import MisconfigurationException
 
 if _FAIRSCALE_AVAILABLE:
     from fairscale.nn.data_parallel.sharded_ddp import ShardedDataParallel
     from fairscale.optim import OSS
-
-    from pytorch_lightning.overrides.fairscale import LightningShardedDataParallel, unwrap_lightning_module_sharded
+    from pytorch_lightning.overrides.fairscale import (
+        LightningShardedDataParallel,
+        unwrap_lightning_module_sharded,
+    )
 
 
 class DDPShardedPlugin(DDPPlugin):
@@ -37,10 +42,14 @@ class DDPShardedPlugin(DDPPlugin):
     def configure_ddp(self):
         self._wrap_optimizers()
         self._model = ShardedDataParallel(
-            LightningShardedDataParallel(self.model),
+            LightningShardedDataParallel(self.model)
+            if self.lightning_module.trainer.state.fn == TrainerFn.FITTING
+            else self.model,
             sharded_optimizer=self.lightning_module.trainer.optimizers,
             # For multi-node training, enabling bucketing will improve performance.
-            reduce_buffer_size=self._REDUCE_BUFFER_SIZE_DEFAULT if self.num_nodes > 1 else 0,
+            reduce_buffer_size=self._REDUCE_BUFFER_SIZE_DEFAULT
+            if self.num_nodes > 1
+            else 0,
         )
         setattr(self._model, "require_backward_grad_sync", False)
 
@@ -51,7 +60,11 @@ class DDPShardedPlugin(DDPPlugin):
                 optimizer = optimizer._optimizer
             if not isinstance(optimizer, OSS):
                 optim_class = type(optimizer)
-                zero_optimizer = OSS(params=optimizer.param_groups, optim=optim_class, **optimizer.defaults)
+                zero_optimizer = OSS(
+                    params=optimizer.param_groups,
+                    optim=optim_class,
+                    **optimizer.defaults
+                )
                 if _FAIRSCALE_OSS_FP16_BROADCAST_AVAILABLE:
                     precision = self.lightning_module.trainer.precision
                     is_fp16 = precision in ("mixed", 16)

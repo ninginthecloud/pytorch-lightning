@@ -13,10 +13,11 @@
 # limitations under the License.
 from typing import Dict, Optional
 
-import torch
-
 import pytorch_lightning as pl
-from pytorch_lightning.plugins.precision.sharded_native_amp import ShardedNativeMixedPrecisionPlugin
+import torch
+from pytorch_lightning.plugins.precision.sharded_native_amp import (
+    ShardedNativeMixedPrecisionPlugin,
+)
 from pytorch_lightning.plugins.training_type.ddp_spawn import DDPSpawnPlugin
 from pytorch_lightning.trainer.states import TrainerFn
 from pytorch_lightning.utilities import _FAIRSCALE_AVAILABLE, rank_zero_only
@@ -26,8 +27,10 @@ if _FAIRSCALE_AVAILABLE:
     from fairscale.nn.data_parallel.sharded_ddp import ShardedDataParallel
     from fairscale.optim import OSS
     from fairscale.optim.grad_scaler import ShardedGradScaler
-
-    from pytorch_lightning.overrides.fairscale import LightningShardedDataParallel, unwrap_lightning_module_sharded
+    from pytorch_lightning.overrides.fairscale import (
+        LightningShardedDataParallel,
+        unwrap_lightning_module_sharded,
+    )
 
 
 class DDPSpawnShardedPlugin(DDPSpawnPlugin):
@@ -36,7 +39,10 @@ class DDPSpawnShardedPlugin(DDPSpawnPlugin):
     def configure_ddp(self):
         self._wrap_optimizers()
         self._model = ShardedDataParallel(
-            LightningShardedDataParallel(self.model), sharded_optimizer=self.lightning_module.trainer.optimizers
+            LightningShardedDataParallel(self.model)
+            if self.lightning_module.trainer.state.fn == TrainerFn.FITTING
+            else self.model,
+            sharded_optimizer=self.lightning_module.trainer.optimizers,
         )
         setattr(self._model, "require_backward_grad_sync", False)
 
@@ -45,7 +51,11 @@ class DDPSpawnShardedPlugin(DDPSpawnPlugin):
         for x, optimizer in enumerate(optimizers):
             if not isinstance(optimizer, OSS):
                 optim_class = type(optimizer)
-                zero_optimizer = OSS(params=optimizer.param_groups, optim=optim_class, **optimizer.defaults)
+                zero_optimizer = OSS(
+                    params=optimizer.param_groups,
+                    optim=optim_class,
+                    **optimizer.defaults
+                )
                 optimizers[x] = zero_optimizer
                 del optimizer
         trainer = self.lightning_module.trainer
