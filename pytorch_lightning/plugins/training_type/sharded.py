@@ -37,7 +37,7 @@ class DDPShardedPlugin(DDPPlugin):
     def configure_ddp(self):
         self._wrap_optimizers()
         self._model = ShardedDataParallel(
-            LightningShardedDataParallel(self.model) if self.model.trainer.state.fn == TrainerFn.FITTING
+            LightningShardedDataParallel(self.model) if self.lightning_module.trainer.state.fn == TrainerFn.FITTING
             else self.model,
             sharded_optimizer=self.lightning_module.trainer.optimizers,
             # For multi-node training, enabling bucketing will improve performance.

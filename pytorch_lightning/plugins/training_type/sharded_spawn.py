@@ -40,7 +40,7 @@ class DDPSpawnShardedPlugin(DDPSpawnPlugin):
         self._wrap_optimizers()
         self._model = ShardedDataParallel(
             LightningShardedDataParallel(self.model)
-            if self.model.trainer.state.fn == TrainerFn.FITTING
+            if self.lightning_module.trainer.state.fn == TrainerFn.FITTING
             else self.model,
             sharded_optimizer=self.lightning_module.trainer.optimizers,
         )
