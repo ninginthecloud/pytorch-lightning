@@ -32,6 +32,7 @@ from pytorch_lightning.plugins.environments.cluster_environment import (
     ClusterEnvironment,
 )
 from pytorch_lightning.plugins.training_type.parallel import ParallelPlugin
+from pytorch_lightning.trainer.states import TrainerFn
 from pytorch_lightning.utilities import (
     _HYDRA_AVAILABLE,
     _TORCH_GREATER_EQUAL_1_7,
